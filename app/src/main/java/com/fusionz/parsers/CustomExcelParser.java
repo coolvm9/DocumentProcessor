@@ -2,16 +2,11 @@ package com.fusionz.parsers;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentParser;
-import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.data.document.splitter.DocumentSplitters;
-import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.Tokenizer;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,9 +23,7 @@ public class CustomExcelParser implements DocumentParser {
     @Override
     public Document parse(InputStream fis) {
         List<EnhancedTextSegment> content = new ArrayList<>();
-        try (
-                Workbook workbook = new XSSFWorkbook(fis)) {
-
+        try (Workbook workbook = new XSSFWorkbook(fis)) {
             for (Sheet sheet : workbook) {
                 String sheetName = sheet.getSheetName();
                 for (Row row : sheet) {
@@ -43,7 +36,6 @@ public class CustomExcelParser implements DocumentParser {
                             metadata.put("sheetName", sheetName);
                             metadata.put("rowNumber", String.valueOf(rowNumber));
                             metadata.put("colNumber", String.valueOf(colNumber));
-
                             content.add(new EnhancedTextSegment(cellText, metadata));
                         }
                     }
@@ -59,14 +51,9 @@ public class CustomExcelParser implements DocumentParser {
             combinedContent.append(text.text()).append("\n");
         }
 
-        // Create the metadata
-        Metadata metadata = new Metadata();
-        metadata.put("fileType", "Excel");
-        metadata.put("fileName", "Excel File Name"); // Modify this line as per your Metadata constructor
-
 
         // Create and return the Document object with the metadata
-        return new Document(combinedContent.toString(), metadata);
+        return new Document(combinedContent.toString());
     }
     private String getCellText(Cell cell) {
         switch (cell.getCellType()) {
@@ -87,17 +74,4 @@ public class CustomExcelParser implements DocumentParser {
         }
     }
 
-    /*public List<EnhancedTextSegment> splitIntoSegments(String content, int chunkSize, int overlap) {
-        DocumentSplitter splitter = DocumentSplitters.recursive( chunkSize, overlap,tokenizer);
-        List<TextSegment> segments = splitter.(content);
-
-        List<EnhancedTextSegment> enhancedSegments = new ArrayList<>();
-        for (TextSegment segment : segments) {
-            // Assuming some default values for metadata
-            Metadata metadata = new Metadata("", "");
-            enhancedSegments.add(new EnhancedTextSegment(segment.getText(), metadata));
-        }
-
-        return enhancedSegments;
-    }*/
 }
