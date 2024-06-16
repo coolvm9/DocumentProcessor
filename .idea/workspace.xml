@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc23605f-7f80-4e01-91de-90b859f8cc3e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPptxParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/DocumentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/DocumentProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPdfParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomExcelParser.java" afterDir="false" />
-    </list>
+    <list default="true" id="cc23605f-7f80-4e01-91de-90b859f8cc3e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
