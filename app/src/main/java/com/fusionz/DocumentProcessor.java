@@ -37,6 +37,8 @@ public class DocumentProcessor {
         ApachePdfBoxDocumentParser pdfParser = new ApachePdfBoxDocumentParser();
 
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvOutputFilePath))) {
+            String[] header = { "File Name", "Segment Number", "Segment Text" };
+            writer.writeNext(header);
             processDocuments(directoryPath, pdfFilesPathMatcher, pdfParser, tokenizer, CHNK_SIZE, OVERLAP, writer);
             processDocuments(directoryPath, msFilesPathMatcher, poiParser, tokenizer, CHNK_SIZE, OVERLAP, writer);
         } catch (IOException e) {
@@ -45,14 +47,15 @@ public class DocumentProcessor {
     }
 
     private static void processDocuments(String directoryPath, PathMatcher pathMatcher, DocumentParser parser, Tokenizer tokenizer, int chunkSize, int overlap, CSVWriter writer) {
-        List<Document> documents = FileSystemDocumentLoader.loadDocuments(directoryPath, pathMatcher, parser);
+        List<Document> documents = FileSystemDocumentLoader.loadDocumentsRecursively(directoryPath, pathMatcher, parser);
         for (Document document : documents) {
             String fileName = document.metadata().getString(Document.FILE_NAME);
             try {
                 List<TextSegment> segments = chunkText(tokenizer, document.text(), chunkSize, overlap);
                 int i = 0;
                 for (TextSegment segment : segments) {
-                    writer.writeNext(new String[]{fileName, String.valueOf(i), i + "", segment.text()});
+                    writer.writeNext(new String[]{fileName, String.valueOf(i), segment.text()});
+                    i++;
                 }
             } catch (Exception e) {
                 System.err.println("Failed to process file: " + fileName);

@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     implementation 'org.apache.pdfbox:pdfbox:2.0.27'
+    implementation 'net.sourceforge.tess4j:tess4j:4.5.5'
 
     // LangChain4J for tokenizing text and document handling
     implementation 'dev.langchain4j:langchain4j:0.31.0'
