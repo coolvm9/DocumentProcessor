@@ -3,6 +3,7 @@ package com.fusionz;
 
 import com.opencsv.CSVWriter;
 import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
@@ -34,31 +35,29 @@ public class DocumentProcessor {
         Tokenizer tokenizer = new HuggingFaceTokenizer();
         ApachePoiDocumentParser poiParser = new ApachePoiDocumentParser();
         ApachePdfBoxDocumentParser pdfParser = new ApachePdfBoxDocumentParser();
-        List<Document> pdfDocuments = FileSystemDocumentLoader.loadDocuments(directoryPath,
-                pdfFilesPathMatcher,
-                pdfParser);
-        List<Document> msDocuments = FileSystemDocumentLoader.loadDocuments(directoryPath,
-                msFilesPathMatcher,
-                poiParser);
-        List<Document> documents = new ArrayList<>();
-        documents.addAll(pdfDocuments);
-        documents.addAll(msDocuments);
+
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvOutputFilePath))) {
-            for (Document document : documents) {
-                String fileName = document.metadata().getString(Document.FILE_NAME);
-                try {
-                    List<TextSegment> segments = chunkText(tokenizer, document.text(), CHNK_SIZE, OVERLAP);
-                    int i = 0;
-                    for (TextSegment segment : segments) {
-                        writer.writeNext(new String[]{fileName, String.valueOf(i), i + "", segment.text()});
-                    }
-                } catch (Exception e) {
-                    System.err.println("Failed to process file: " + fileName);
-                    e.printStackTrace();
-                }
-            }
+            processDocuments(directoryPath, pdfFilesPathMatcher, pdfParser, tokenizer, CHNK_SIZE, OVERLAP, writer);
+            processDocuments(directoryPath, msFilesPathMatcher, poiParser, tokenizer, CHNK_SIZE, OVERLAP, writer);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void processDocuments(String directoryPath, PathMatcher pathMatcher, DocumentParser parser, Tokenizer tokenizer, int chunkSize, int overlap, CSVWriter writer) {
+        List<Document> documents = FileSystemDocumentLoader.loadDocuments(directoryPath, pathMatcher, parser);
+        for (Document document : documents) {
+            String fileName = document.metadata().getString(Document.FILE_NAME);
+            try {
+                List<TextSegment> segments = chunkText(tokenizer, document.text(), chunkSize, overlap);
+                int i = 0;
+                for (TextSegment segment : segments) {
+                    writer.writeNext(new String[]{fileName, String.valueOf(i), i + "", segment.text()});
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to process file: " + fileName);
+                e.printStackTrace();
+            }
         }
     }
 
@@ -66,7 +65,7 @@ public class DocumentProcessor {
         List<TextSegment> segments;
         DocumentSplitter splitter;
         try {
-            splitter = DocumentSplitters.recursive( chunkSize, overlap, tokenizer);
+            splitter = DocumentSplitters.recursive(chunkSize, overlap, tokenizer);
             segments = splitter.split(Document.document(text));
             // catch any exceptions
         } catch (Exception e) {
