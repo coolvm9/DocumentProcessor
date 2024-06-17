@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomExcelParser implements DocumentParser {
-
     private final Tokenizer tokenizer;
-
     public CustomExcelParser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
@@ -50,8 +48,6 @@ public class CustomExcelParser implements DocumentParser {
         for (EnhancedTextSegment text : content) {
             combinedContent.append(text.text()).append("\n");
         }
-
-
         // Create and return the Document object with the metadata
         return new Document(combinedContent.toString());
     }
