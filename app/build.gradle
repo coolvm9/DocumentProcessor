@@ -24,7 +24,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-embeddings
     implementation 'dev.langchain4j:langchain4j-embeddings:0.31.0'
-
+    // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+    implementation 'com.itextpdf:itextpdf:5.5.13.4'
 
     // LangChain4J Apache POI document parser
     implementation 'dev.langchain4j:langchain4j-document-parser-apache-poi:0.31.0'
