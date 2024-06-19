@@ -10,6 +10,7 @@ import dev.langchain4j.model.Tokenizer;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -21,6 +22,7 @@ import org.apache.pdfbox.text.TextPosition;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -42,7 +44,11 @@ public class CustomPdfParser implements DocumentParser {
         List<TextSegment> content = new ArrayList<>();
 
         try {
-            PDDocument document = PDDocument.load(inputStream);
+            // Load the PDF document
+            PDDocument document = null;//Loader.loadPDF(new FilinputStream);
+
+
+
             PDFTextStripper textStripper = new PDFTextStripper() {
             @Override
             protected void writeString(String string, List<TextPosition> textPositions) throws IOException {

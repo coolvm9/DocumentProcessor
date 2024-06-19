@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc23605f-7f80-4e01-91de-90b859f8cc3e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/ApachePoiDocumentParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreateDocxDocument.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePdfDocument.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePptxDocument.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/data/DocumentStructure.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/DOCXParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/PDFParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/Parser_v1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/XLSXParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPdfParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPdfParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +29,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -31,19 +41,74 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="2hwPB0KGvL097qVvAHBGmMwmEOO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.google.cloudcode.ide_session_index&quot;: &quot;20240615_0000&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.DocumentProcessor:app [:app:CreateDocxDocument.main()].executor": "Run",
+    "Gradle.DocumentProcessor:app [:app:CreatePdfDocument.main()].executor": "Run",
+    "Gradle.DocumentProcessor:app [:app:CreatePptxDocument.main()].executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.google.cloudcode.ide_session_index": "20240619_0001",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
+  <component name="RunManager" selected="Application.CreateDocxDocument">
+    <configuration name="CreateDocxDocument" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.fusionz.createtest.CreateDocxDocument" />
+      <module name="DocumentProcessor.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.fusionz.createtest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CreatePdfDocument" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.fusionz.createtest.CreatePdfDocument" />
+      <module name="DocumentProcessor.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.fusionz.createtest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CreatePptxDocument" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.fusionz.createtest.CreatePptxDocument" />
+      <module name="DocumentProcessor.app.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.fusionz.createtest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.CreateDocxDocument" />
+        <item itemvalue="Application.CreatePdfDocument" />
+        <item itemvalue="Application.CreatePptxDocument" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
