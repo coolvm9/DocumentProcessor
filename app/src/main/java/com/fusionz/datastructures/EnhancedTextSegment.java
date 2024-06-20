@@ -1,4 +1,4 @@
-package com.fusionz.parsers;
+package com.fusionz.datastructures;
 
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.segment.TextSegment;

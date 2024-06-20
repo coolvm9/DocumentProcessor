@@ -1,5 +1,6 @@
-package com.fusionz.parsers;
+package com.fusionz.parser.v0;
 
+import com.fusionz.datastructures.EnhancedTextSegment;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.Metadata;
@@ -7,21 +8,24 @@ import dev.langchain4j.model.Tokenizer;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomExcelParser implements DocumentParser {
+public class XLSXParser implements Parser {
     private final Tokenizer tokenizer;
-    public CustomExcelParser(Tokenizer tokenizer) {
+    public XLSXParser(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
 
     @Override
-    public Document parse(InputStream fis) {
+    public String parseFullText(String filePath)  {
         List<EnhancedTextSegment> content = new ArrayList<>();
-        try (Workbook workbook = new XSSFWorkbook(fis)) {
+        File file = new File(filePath);
+        try (Workbook workbook = new XSSFWorkbook(new FileInputStream(file))) {
             for (Sheet sheet : workbook) {
                 String sheetName = sheet.getSheetName();
                 for (Row row : sheet) {
@@ -49,7 +53,7 @@ public class CustomExcelParser implements DocumentParser {
             combinedContent.append(text.text()).append("\n");
         }
         // Create and return the Document object with the metadata
-        return new Document(combinedContent.toString());
+        return combinedContent.toString();
     }
     private String getCellText(Cell cell) {
         switch (cell.getCellType()) {

@@ -1,6 +1,6 @@
-package com.fusionz.parser_v1;
+package com.fusionz.parser.v1;
 
-import com.fusionz.data.DocumentStructure;
+import com.fusionz.datastructures.DocumentStructure;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DOCXParser implements Parser_v1 {
+public class DOCXParser implements Parser {
 
     @Override
     public String parseFullText(String filePath) throws IOException {

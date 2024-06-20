@@ -5,16 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc23605f-7f80-4e01-91de-90b859f8cc3e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreateDocxDocument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePdfDocument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePptxDocument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/data/DocumentStructure.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/DOCXParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/PDFParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/Parser_v1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/XLSXParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/Parser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/FileUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/com/fusionz/DocumentGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/com/fusionz/PathUtilsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPdfParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPdfParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/DocumentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/main/DocumentProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreateDocxDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePdfDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePptxDocument.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/data/DocumentStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/datastructures/DocumentStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/DOCXParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/DOCXParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/PDFParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/PDFParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/Parser_v1.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/XLSXParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/XLSXParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomExcelParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/XLSXParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPdfParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/PDFParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPptxParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/PPTXParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/EnhancedTextSegment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/datastructures/EnhancedTextSegment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/SequentialPDFParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/SequentialPDFParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/ApachePoiDocumentParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/main/ApachePoiDocumentParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/DocToDocxConverter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/Util.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,8 +41,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -53,6 +65,7 @@
     "Gradle.DocumentProcessor:app [:app:CreateDocxDocument.main()].executor": "Run",
     "Gradle.DocumentProcessor:app [:app:CreatePdfDocument.main()].executor": "Run",
     "Gradle.DocumentProcessor:app [:app:CreatePptxDocument.main()].executor": "Run",
+    "Gradle.DocumentProcessor:app [:app:DocumentGenerator.main()].executor": "Run",
     "Gradle.Download Sources.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "com.google.cloudcode.ide_session_index": "20240619_0001",
@@ -61,13 +74,19 @@
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.CreateDocxDocument">
+  <component name="RecentsManager">
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="com.fusionz.DocumentGenerator" />
+      <recent name="com.fusionz.utils.FileUtils" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.DocumentGenerator">
     <configuration name="CreateDocxDocument" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.fusionz.createtest.CreateDocxDocument" />
+      <option name="MAIN_CLASS_NAME" value="com.fusionz.generate.CreateDocxDocument" />
       <module name="DocumentProcessor.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.fusionz.createtest.*" />
+          <option name="PATTERN" value="com.fusionz.generate.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -76,11 +95,11 @@
       </method>
     </configuration>
     <configuration name="CreatePdfDocument" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.fusionz.createtest.CreatePdfDocument" />
+      <option name="MAIN_CLASS_NAME" value="com.fusionz.generate.CreatePdfDocument" />
       <module name="DocumentProcessor.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.fusionz.createtest.*" />
+          <option name="PATTERN" value="com.fusionz.generate.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -89,11 +108,24 @@
       </method>
     </configuration>
     <configuration name="CreatePptxDocument" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.fusionz.createtest.CreatePptxDocument" />
+      <option name="MAIN_CLASS_NAME" value="com.fusionz.generate.CreatePptxDocument" />
       <module name="DocumentProcessor.app.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.fusionz.createtest.*" />
+          <option name="PATTERN" value="com.fusionz.generate.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DocumentGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.fusionz.DocumentGenerator" />
+      <module name="DocumentProcessor.app.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.fusionz.main.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -103,6 +135,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DocumentGenerator" />
         <item itemvalue="Application.CreateDocxDocument" />
         <item itemvalue="Application.CreatePdfDocument" />
         <item itemvalue="Application.CreatePptxDocument" />

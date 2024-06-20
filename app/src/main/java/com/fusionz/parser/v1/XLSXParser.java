@@ -1,6 +1,6 @@
-package com.fusionz.parser_v1;
+package com.fusionz.parser.v1;
 
-import com.fusionz.data.DocumentStructure;
+import com.fusionz.datastructures.DocumentStructure;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -9,9 +9,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class XLSXParser implements Parser_v1 {
+public class XLSXParser implements Parser {
 
     @Override
     public String parseFullText(String filePath) throws IOException {

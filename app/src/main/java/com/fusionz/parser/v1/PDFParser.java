@@ -1,6 +1,6 @@
-package com.fusionz.parser_v1;
+package com.fusionz.parser.v1;
 
-import com.fusionz.data.DocumentStructure;
+import com.fusionz.datastructures.DocumentStructure;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PDFParser implements Parser_v1 {
+public class PDFParser implements Parser {
 
     @Override
     public String parseFullText(String filePath) throws IOException {

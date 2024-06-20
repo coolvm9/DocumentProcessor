@@ -1,15 +1,16 @@
-package com.fusionz;
+package com.fusionz.main;
 
 
-import com.fusionz.parsers.CustomExcelParser;
-import com.fusionz.parsers.CustomPptxParser;
-import com.fusionz.utils.Util;
+import com.fusionz.parser.v0.PDFParser;
+import com.fusionz.parser.v0.Parser;
+import com.fusionz.parser.v0.XLSXParser;
+import com.fusionz.parser.v0.PPTXParser;
+import com.fusionz.utils.FileUtils;
 import com.opencsv.CSVWriter;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import dev.langchain4j.data.document.parser.apache.poi.ApachePoiDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
@@ -21,10 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.PathMatcher;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DocumentProcessor {
@@ -36,18 +34,18 @@ public class DocumentProcessor {
 
         int CHNK_SIZE = 128;
         int OVERLAP = 64;
-        List<String> msFileTypes = Arrays.asList("doc", "docx", "ppt", "xls", "xlsx", "msg");
-        List<String> pptFileTypes = Arrays.asList("ppt", "pptx");
-        List<String> excelFileTypes = Arrays.asList("xls", "xlsx");
-        List<String> pdfFileTypes = Arrays.asList("pdf");
+        List<String> msFileTypes = List.of("doc", "docx", "ppt", "xls", "xlsx", "msg");
+        List<String> pptFileTypes = List.of("ppt", "pptx");
+        List<String> excelFileTypes = List.of("xls", "xlsx");
+        List<String> pdfFileTypes = List.of("pdf");
 
         Tokenizer tokenizer = new HuggingFaceTokenizer();
 
-        ApachePoiDocumentParser poiParser = new ApachePoiDocumentParser();
-        DocumentParser excelParser = new CustomExcelParser(tokenizer);
-        DocumentParser pptParser = new CustomPptxParser("path/to/tessdata");
+        Parser poiParser = new PPTXParser("path/to/tessdata");
+        Parser excelParser = new XLSXParser(tokenizer);
+        Parser pptParser = new PPTXParser("path/to/tessdata");
 
-        ApachePdfBoxDocumentParser pdfParser = new ApachePdfBoxDocumentParser();
+        Parser pdfParser = new PDFParser("path/to/tessdata", tokenizer);
 
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvOutputFilePath))) {
             String[] header = { "File Name", "Segment Number", "Segment Text" };
@@ -65,14 +63,14 @@ public class DocumentProcessor {
         }
     }
 
-    private static void processDocuments(String directoryPath, List<String> mimeTypes, DocumentParser parser, Tokenizer tokenizer, int chunkSize, int overlap, CSVWriter writer) {
+    private static void processDocuments(String directoryPath, List<String> mimeTypes, Parser parser, Tokenizer tokenizer, int chunkSize, int overlap, CSVWriter writer) {
         // Get all files from the directory based on the path matcher
         // add try catch block
         List<File> files;
         try {
-            files = Util.getFilesRecursively(directoryPath, mimeTypes);
+            files = FileUtils.getFilesRecursively(directoryPath, mimeTypes);
         for (File file : files) {
-            Document document = parser.parse(new FileInputStream(file));
+            Document document = Document.document(parser.parseFullText(file.getAbsolutePath()));
             String fileName = file.getName();
             Metadata metadata = document.metadata();
             metadata.put(Document.FILE_NAME, fileName);

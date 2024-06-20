@@ -1,4 +1,4 @@
-package com.fusionz.parsers;
+package com.fusionz.parser;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.*;
 

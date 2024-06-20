@@ -1,4 +1,4 @@
-package com.fusionz.data;
+package com.fusionz.datastructures;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

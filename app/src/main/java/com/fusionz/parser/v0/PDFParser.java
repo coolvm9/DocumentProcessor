@@ -1,7 +1,6 @@
-package com.fusionz.parsers;
+package com.fusionz.parser.v0;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
@@ -22,33 +21,25 @@ import org.apache.pdfbox.text.TextPosition;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomPdfParser implements DocumentParser {
+public class PDFParser implements Parser {
 
     private final ITesseract tesseract;
     private final Tokenizer tokenizer;
 
-    public CustomPdfParser(String tessDataPath, Tokenizer tokenizer) {
+    public PDFParser(String tessDataPath, Tokenizer tokenizer) {
         this.tesseract = new Tesseract();
         this.tesseract.setDatapath(tessDataPath);
         this.tokenizer = tokenizer;
     }
 
     @Override
-    public Document parse(InputStream inputStream)  {
+    public String parseFullText(String filePath)  {
         List<TextSegment> content = new ArrayList<>();
-
-        try {
-            // Load the PDF document
-            PDDocument document = null;//Loader.loadPDF(new FilinputStream);
-
-
-
+        try(PDDocument document = Loader.loadPDF(new File(filePath))) {
             PDFTextStripper textStripper = new PDFTextStripper() {
             @Override
             protected void writeString(String string, List<TextPosition> textPositions) throws IOException {
@@ -86,33 +77,28 @@ public class CustomPdfParser implements DocumentParser {
                 }
             }
         }
-
         document.close();
         }catch (IOException | TesseractException e) {
             e.printStackTrace();
         }
-
         // Combine the content into a single string (for demonstration purposes)
         StringBuilder combinedContent = new StringBuilder();
         for (TextSegment text : content) {
             combinedContent.append(text.text()).append("\n");
         }
-
         // Create and return the Document object
-        return new Document( combinedContent.toString());
+        return combinedContent.toString();
     }
 
     public List<TextSegment> splitIntoSegments(Document document, int chunkSize, int overlap) {
         DocumentSplitter splitter = DocumentSplitters.recursive( chunkSize, overlap, tokenizer);
         List<TextSegment> segments = splitter.split(document);
-
         List<TextSegment> enhancedSegments = new ArrayList<>();
         for (TextSegment segment : segments) {
             // Assuming some default values for metadata
             Metadata metadata = new Metadata();
             enhancedSegments.add(new TextSegment(segment.text(), metadata));
         }
-
         return enhancedSegments;
     }
 }

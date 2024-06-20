@@ -1,4 +1,4 @@
-package com.fusionz.parsers;
+package com.fusionz.parser.v0;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentParser;
@@ -13,27 +13,24 @@ import org.apache.poi.xslf.usermodel.XSLFTextShape;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomPptxParser implements DocumentParser {
+public class PPTXParser implements Parser {
 
     private final ITesseract tesseract;
 
-    public CustomPptxParser(String tessDataPath) {
+    public PPTXParser(String tessDataPath) {
         this.tesseract = new Tesseract();
         this.tesseract.setDatapath(tessDataPath);
     }
 
     @Override
-    public Document parse(InputStream inputStream)  {
+    public String parseFullText(String filePath)  {
         List<String> content = new ArrayList<>();
-        try{
-        XMLSlideShow ppt = new XMLSlideShow(inputStream);
+        File file = new File(filePath);
+        try(XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(file))){
         int imageIndex = 0;
         for (XSLFSlide slide : ppt.getSlides()) {
             for (XSLFShape shape : slide.getShapes()) {
@@ -55,18 +52,15 @@ public class CustomPptxParser implements DocumentParser {
                 }
             }
         }
-        ppt.close();
         } catch (IOException | TesseractException e) {
             e.printStackTrace();
         }
-
         // Combine the content into a single string
         StringBuilder combinedContent = new StringBuilder();
         for (String text : content) {
             combinedContent.append(text).append("\n");
         }
-        // Create and return the Document object
-        return new Document(combinedContent.toString());
+        return combinedContent.toString();
     }
 
     public List<String> chunkContent(String content, int chunkSize, int overlap) {
