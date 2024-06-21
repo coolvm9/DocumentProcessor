@@ -2,11 +2,16 @@ package com.fusionz.utils;
 
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
+import org.apache.poi.hwpf.converter.WordToHtmlUtils;
 import org.apache.poi.hwpf.usermodel.Paragraph;
+import org.apache.poi.hwpf.usermodel.Picture;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -152,7 +157,6 @@ public class FileUtils {
     }
 
 
-
     public static List<File> getFilesRecursively(String directoryPath, List<String> byFileExtension) throws IOException {
         List<File> fileList = new ArrayList<>();
         Path startPath = Paths.get(directoryPath);
@@ -179,8 +183,8 @@ public class FileUtils {
         if (!docFile.getName().endsWith(".doc")) {
             throw new IllegalArgumentException("Input file must be a .doc file");
         }
-        try(HWPFDocument doc = new HWPFDocument(new FileInputStream(docFile));
-            XWPFDocument docx = new XWPFDocument();) {
+        try (HWPFDocument doc = new HWPFDocument(new FileInputStream(docFile));
+             XWPFDocument docx = new XWPFDocument();) {
             Range range = doc.getRange();
             for (int i = 0; i < range.numParagraphs(); i++) {
                 Paragraph para = range.getParagraph(i);
@@ -199,4 +203,48 @@ public class FileUtils {
         }
     }
 
+    public static void convertDocToHtml(File docFile, File htmlFile) throws Exception {
+        HWPFDocument doc = new HWPFDocument(new FileInputStream(docFile));
+
+        WordToHtmlConverter wordToHtmlConverter = new WordToHtmlConverter(
+                DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument());
+        wordToHtmlConverter.processDocument(doc);
+
+        List<Picture> pics = doc.getPicturesTable().getAllPictures();
+        if (pics != null) {
+            for (Picture pic : pics) {
+                pic.writeImageContent(new FileOutputStream(docFile.getParent() + "/" + pic.suggestFullFileName()));
+            }
+        }
+
+        Document htmlDocument = wordToHtmlConverter.getDocument();
+
+        // Convert the Document to a String
+        DOMSource domSource = new DOMSource(htmlDocument);
+        StreamResult streamResult = new StreamResult(new OutputStreamWriter(new FileOutputStream(htmlFile), "UTF-8"));
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer serializer = tf.newTransformer();
+        serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+        serializer.setOutputProperty(OutputKeys.METHOD, "html");
+        serializer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        serializer.transform(domSource, streamResult);
+    }
+
+    public static void convertHtmlToDocx(File htmlFile, File docxFile) throws IOException {
+        org.jsoup.nodes.Document htmlDoc = Jsoup.parse(htmlFile, "UTF-8");
+
+        try (XWPFDocument docx = new XWPFDocument();
+             FileOutputStream out = new FileOutputStream(docxFile)) {
+
+            Elements paragraphs = htmlDoc.select("p");
+            for (Element p : paragraphs) {
+                XWPFParagraph paragraph = docx.createParagraph();
+                XWPFRun run = paragraph.createRun();
+                run.setText(p.text());
+            }
+
+            docx.write(out);
+        }
+    }
 }
+

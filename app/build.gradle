@@ -21,6 +21,10 @@ dependencies {
     implementation 'technology.tabula:tabula:1.0.5'
     implementation 'net.sourceforge.tess4j:tess4j:4.5.5'
 
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+    implementation 'org.jsoup:jsoup:1.14.3'
+
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
