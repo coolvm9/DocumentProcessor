@@ -5,28 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc23605f-7f80-4e01-91de-90b859f8cc3e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/Parser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/FileUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/com/fusionz/DocumentGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/test/java/com/fusionz/PathUtilsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/DocumentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/main/DocumentProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreateDocxDocument.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePdfDocument.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/createtest/CreatePptxDocument.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/data/DocumentStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/datastructures/DocumentStructure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/DOCXParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/DOCXParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/PDFParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/PDFParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/Parser_v1.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser_v1/XLSXParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v1/XLSXParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomExcelParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/XLSXParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPdfParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/PDFParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/CustomPptxParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/v0/PPTXParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/EnhancedTextSegment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/datastructures/EnhancedTextSegment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parsers/SequentialPDFParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/parser/SequentialPDFParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/ApachePoiDocumentParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/main/ApachePoiDocumentParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/DocToDocxConverter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/utils/Util.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fusionz/main/DocumentProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fusionz/main/DocumentProcessor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +104,7 @@
       <module name="DocumentProcessor.app.test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.fusionz.main.*" />
+          <option name="PATTERN" value="com.fusionz.parser.v0.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>

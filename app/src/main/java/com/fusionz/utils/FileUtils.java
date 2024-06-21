@@ -2,8 +2,11 @@ package com.fusionz.utils;
 
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
+import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -171,4 +174,29 @@ public class FileUtils {
 
         return fileList;
     }
+
+    public static void convertDocToDocx(File docFile) throws IOException {
+        if (!docFile.getName().endsWith(".doc")) {
+            throw new IllegalArgumentException("Input file must be a .doc file");
+        }
+        try(HWPFDocument doc = new HWPFDocument(new FileInputStream(docFile));
+            XWPFDocument docx = new XWPFDocument();) {
+            Range range = doc.getRange();
+            for (int i = 0; i < range.numParagraphs(); i++) {
+                Paragraph para = range.getParagraph(i);
+                XWPFParagraph xwpfParagraph = docx.createParagraph();
+                XWPFRun run = xwpfParagraph.createRun();
+                run.setText(para.text());
+            }
+            // Save the .docx file
+            String docxFilePath = docFile.getAbsolutePath().replace(".doc", ".docx");
+            try (FileOutputStream out = new FileOutputStream(new File(docxFilePath))) {
+                docx.write(out);
+            }
+            // Close the documents
+            doc.close();
+            docx.close();
+        }
+    }
+
 }

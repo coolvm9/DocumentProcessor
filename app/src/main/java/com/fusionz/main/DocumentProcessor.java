@@ -28,7 +28,6 @@ import java.util.List;
 public class DocumentProcessor {
 
     public static void main(String[] args) {
-
         String directoryPath = "path/to/your/directory";
         String csvOutputFilePath = "path/to/your/directory/out.csv";
 
@@ -63,12 +62,12 @@ public class DocumentProcessor {
         }
     }
 
-    private static void processDocuments(String directoryPath, List<String> mimeTypes, Parser parser, Tokenizer tokenizer, int chunkSize, int overlap, CSVWriter writer) {
+    private static void processDocuments(String directoryPath, List<String> fileTypes, Parser parser, Tokenizer tokenizer, int chunkSize, int overlap, CSVWriter writer) {
         // Get all files from the directory based on the path matcher
         // add try catch block
         List<File> files;
         try {
-            files = FileUtils.getFilesRecursively(directoryPath, mimeTypes);
+            files = FileUtils.getFilesRecursively(directoryPath, fileTypes);
         for (File file : files) {
             Document document = Document.document(parser.parseFullText(file.getAbsolutePath()));
             String fileName = file.getName();
