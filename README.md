@@ -224,3 +224,106 @@ public static CloseableHttpClient createHttpClientWithProxy(String proxyUrl) thr
             e.printStackTrace();
         }
     }
+
+
+    package dev.fusion;
+
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
+import org.apache.hc.client5.http.routing.HttpRoutePlanner;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.apache.hc.core5.ssl.TrustStrategy;
+import org.apache.hc.core5.util.Timeout;
+
+import javax.net.ssl.SSLContext;
+import java.net.URI;
+import java.security.cert.X509Certificate;
+
+public class HttpClientWithProxy {
+
+    /**
+     * Method to create an HTTP client with proxy settings and SSL configuration.
+     *
+     * @param proxyUrl Proxy URL in the format "http://username:password@proxy.company.com:8080"
+     * @return Configured CloseableHttpClient
+     * @throws Exception If any configuration error occurs
+     */
+    public static CloseableHttpClient createHttpClientWithProxy(String proxyUrl) throws Exception {
+
+        // Step 1: Parse the proxy URL to extract credentials, host, and port
+        URI proxyUri = new URI(proxyUrl);
+        String[] userInfo = proxyUri.getUserInfo().split(":", 2);
+        String username = userInfo[0];
+        String password = userInfo[1];
+
+        // Step 2: Set up credentials for the proxy using AuthScope
+        BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(
+                new AuthScope(proxyUri.getHost(), proxyUri.getPort()),
+                new UsernamePasswordCredentials(username, password.toCharArray())
+        );
+
+        // Step 3: Create an SSL context that trusts all certificates (for testing purposes)
+        SSLContext sslContext = SSLContextBuilder.create()
+                .loadTrustMaterial(null, (TrustStrategy) (X509Certificate[] chain, String authType) -> true)
+                .build();
+
+        // Step 4: Create an SSLConnectionSocketFactory with the custom SSL context
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslContext);
+
+        // Step 5: Configure the connection manager with the SSL socket factory
+        var connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setSSLSocketFactory(sslSocketFactory)
+                .build();
+
+        // Step 6: Configure the proxy host and route planner
+        HttpHost proxy = new HttpHost(proxyUri.getHost(), proxyUri.getPort());
+        HttpRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+
+        // Step 7: Set up request configuration
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(Timeout.ofSeconds(30))
+                .setResponseTimeout(Timeout.ofSeconds(30))
+                .setConnectionRequestTimeout(Timeout.ofSeconds(30))
+                .build();
+
+        // Step 8: Build the HTTP client without setSSLContext()
+        return HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .setDefaultCredentialsProvider(credsProvider)
+                .setRoutePlanner(routePlanner)
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+    }
+
+    public static void main(String[] args) {
+        try {
+            // Proxy URL with username and password
+            String proxyUrl = "http://myenterpriseId:password@proxy.company.com:8080";
+
+            // Create HTTP client with proxy settings
+            CloseableHttpClient httpClient = createHttpClientWithProxy(proxyUrl);
+
+            // Now you can use httpClient to make requests through the proxy
+            HttpGet request = new HttpGet("https://www.example.com");
+            httpClient.execute(request, response -> {
+                System.out.println("Status Code: " + response.getCode());
+                System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
+                return null;
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
