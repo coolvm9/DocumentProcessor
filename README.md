@@ -20,6 +20,64 @@ public void extractTables(PDDocument document) {
     }
 
 
+    public class HttpClientWithProxy {
+
+    /**
+     * Method to create an HTTP client with proxy settings and SSL configuration.
+     *
+     * @param proxyUrl Proxy URL in the format "http://username:password@proxy.company.com:8080"
+     * @return Configured CloseableHttpClient
+     * @throws Exception If any configuration error occurs
+     */
+    public static CloseableHttpClient createHttpClientWithProxy(String proxyUrl) throws Exception {
+
+        // Step 1: Parse the proxy URL to extract credentials, host, and port
+        URI proxyUri = new URI(proxyUrl);
+        String[] userInfo = proxyUri.getUserInfo().split(":");
+        String username = userInfo[0];
+        String password = userInfo[1];
+
+        // Step 2: Set up credentials for the proxy using AuthScope
+        BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(new AuthScope(proxyUri.getHost(), proxyUri.getPort()),
+                new UsernamePasswordCredentials(username, password.toCharArray()));
+
+        // Step 3: Create an SSL context (trust all certificates for simplicity here)
+        SSLContext sslContext = SSLContexts.custom()
+                .loadTrustMaterial((chain, authType) -> true)  // Trust all certificates (not recommended for production)
+                .build();
+
+        // Step 4: Create an SSLConnectionSocketFactory
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslContext);
+
+        // Step 5: Configure the connection manager with SSL
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(
+                RegistryBuilder.<ConnectionSocketFactory>create()
+                        .register("https", sslSocketFactory)
+                        .register("http", ConnectionSocketFactory.PLAIN)
+                        .build());
+
+        // Step 6: Configure the proxy host and port
+        HttpHost proxyHost = new HttpHost(proxyUri.getHost(), proxyUri.getPort());
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxyHost);
+
+        // Step 7: Set up timeout configurations
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(Timeout.ofSeconds(30))  // Connection timeout
+                .setResponseTimeout(Timeout.ofSeconds(30))  // Response timeout
+                .setConnectionRequestTimeout(Timeout.ofSeconds(30))  // Request timeout
+                .build();
+
+        // Step 8: Build the HTTP client with proxy, SSL, and credentials
+        return HttpClients.custom()
+                .setConnectionManager(connectionManager)  // Connection manager
+                .setRoutePlanner(routePlanner)  // Proxy route planner
+                .setDefaultCredentialsProvider(credsProvider)  // Proxy authentication using credentials
+                .setDefaultRequestConfig(requestConfig)  // Timeout configurations
+                .build();
+    }
+
+
     public static CloseableHttpClient createHttpClientWithProxy(String proxyUrl) throws Exception {
 
         // Step 1: Parse the proxy URL to extract credentials, host, and port
