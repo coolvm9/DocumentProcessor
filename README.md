@@ -20,6 +20,19 @@ public void extractTables(PDDocument document) {
     }
 
 
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.routing.DefaultProxyRoutePlanner;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.net.URIAuthority;
+import org.apache.hc.core5.net.URIBuilder;
+import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.auth.CredentialsProvider;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
+
 
 
 public static CloseableHttpClient createHttpClientWithProxy(String proxyUrl) throws Exception {
