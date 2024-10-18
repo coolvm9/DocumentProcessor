@@ -396,3 +396,109 @@ public class DocumentAIResponsePrinter {
         return sb.toString();
     }
 }
+
+
+
+package dev.fusion;
+
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.EntityBuilder;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+public class GCPChatCompletionExample {
+    public static void main(String[] args) {
+        try {
+            String accessToken = "ya29.a0AfH6SMB6"; // Replace with your actual access token
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            // Corrected URL
+            String url = "" +
+                    "";
+
+            // Build the payload using JSONObject
+            JSONObject payload = new JSONObject();
+
+            // Set model and streaming options
+            payload.put("model", "meta/llama-2-70b-vision-instruct-maas");
+            payload.put("stream", false);
+            payload.put("max_tokens", 40);
+            payload.put("temperature", 0.4);
+            payload.put("top_k", 10);
+            payload.put("top_p", 0.95);
+            payload.put("n", 1);
+
+            // Build the messages array
+            JSONArray messages = new JSONArray();
+            JSONObject message = new JSONObject();
+            message.put("role", "user");
+
+            // Content array
+            JSONArray contentArray = new JSONArray();
+            JSONObject content = new JSONObject();
+            content.put("text", "What's llama?");
+            content.put("type", "text");
+            contentArray.put(content);
+
+            message.put("content", contentArray);
+            messages.put(message);
+
+            payload.put("messages", messages);
+
+
+            // Create CloseableHttpClient
+
+
+            // Create HttpPost request
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setHeader("Authorization", "Bearer " + accessToken);
+            httpPost.setHeader("Content-Type", "application/json");
+
+            // Set the payload
+            httpPost.setEntity(EntityBuilder.create()
+                    .setText(payload.toString())
+                    .setContentType(org.apache.hc.core5.http.ContentType.APPLICATION_JSON)
+                    .build());
+
+            // Execute the request
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+
+            try {
+                // Get the response body
+                String responseBody = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                // Print the response
+                System.out.println(responseBody);
+
+                // Optionally parse the response
+                JSONObject jsonResponse = new JSONObject(responseBody);
+                JSONArray choices = jsonResponse.getJSONArray("choices");
+                JSONObject firstChoice = choices.getJSONObject(0);
+                JSONObject messageResponse = firstChoice.getJSONObject("message");
+                JSONArray messageContent = messageResponse.getJSONArray("content");
+                JSONObject firstContent = messageContent.getJSONObject(0);
+                String replyText = firstContent.getString("text");
+
+                // Print the assistant's reply
+                System.out.println("Assistant's Reply: " + replyText);
+
+            } finally {
+                // Close the response
+                response.close();
+            }
+
+            // Close the client
+            httpClient.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
