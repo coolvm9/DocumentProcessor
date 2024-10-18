@@ -327,3 +327,72 @@ public class HttpClientWithProxy {
         }
     }
 }
+
+
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class DocumentAIResponsePrinter {
+    public static void main(String[] args) {
+        // Replace with your actual JSON response string
+        String jsonResponse = "{ ... }";
+
+        // Parse the JSON response
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+
+        // Extract the 'document' object
+        JSONObject document = jsonObject.getJSONObject("document");
+
+        // Extract the full text content
+        String fullText = document.getString("text");
+
+        // Get the 'pages' array
+        JSONArray pages = document.getJSONArray("pages");
+
+        // Iterate over pages
+        for (int i = 0; i < pages.length(); i++) {
+            JSONObject page = pages.getJSONObject(i);
+            System.out.println("Page " + (i + 1) + ":");
+
+            // Get the 'paragraphs' array within the page
+            JSONArray paragraphs = page.optJSONArray("paragraphs");
+
+            if (paragraphs != null) {
+                // Iterate over paragraphs
+                for (int j = 0; j < paragraphs.length(); j++) {
+                    JSONObject paragraph = paragraphs.getJSONObject(j);
+
+                    // Get the text anchor for the paragraph
+                    JSONObject textAnchor = paragraph.getJSONObject("layout").getJSONObject("textAnchor");
+
+                    // Extract text segments based on the text anchor
+                    String paragraphText = getTextFromTextAnchor(fullText, textAnchor);
+                    System.out.println(paragraphText);
+                }
+            } else {
+                System.out.println("No paragraphs found on this page.");
+            }
+
+            System.out.println(); // Add a newline for readability
+        }
+    }
+
+    // Helper method to extract text based on text anchor
+    private static String getTextFromTextAnchor(String fullText, JSONObject textAnchor) {
+        JSONArray textSegments = textAnchor.getJSONArray("textSegments");
+        StringBuilder sb = new StringBuilder();
+
+        for (int k = 0; k < textSegments.length(); k++) {
+            JSONObject segment = textSegments.getJSONObject(k);
+            int startIndex = segment.optInt("startIndex", 0);
+            int endIndex = segment.getInt("endIndex");
+
+            // Extract the substring from the full text
+            String segmentText = fullText.substring(startIndex, endIndex);
+            sb.append(segmentText);
+        }
+
+        return sb.toString();
+    }
+}
