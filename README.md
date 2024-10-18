@@ -20,6 +20,46 @@ public void extractTables(PDDocument document) {
     }
 
 
+    public static CloseableHttpClient createHttpClientWithProxy(String proxyUrl) throws Exception {
+
+        // Step 1: Parse the proxy URL to extract credentials, host, and port
+        URI proxyUri = new URI(proxyUrl);
+        String[] userInfo = proxyUri.getUserInfo().split(":");
+        String username = userInfo[0];
+        String password = userInfo[1];
+
+        // Step 2: Set up credentials for the proxy using AuthScope
+        BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(new AuthScope(proxyUri.getHost(), proxyUri.getPort()),
+                new UsernamePasswordCredentials(username, password.toCharArray()));
+
+        // Step 3: Create an SSL context (trust all certificates for simplicity here)
+        SSLContext sslContext = SSLContexts.custom()
+                .loadTrustMaterial((chain, authType) -> true)  // Trust all certificates (not recommended for production)
+                .build();
+
+        // Step 4: Configure the proxy host and port
+        HttpHost proxyHost = new HttpHost(proxyUri.getHost(), proxyUri.getPort());
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxyHost);
+
+        // Step 5: Set up timeout configurations
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(Timeout.ofSeconds(30))  // Connection timeout
+                .setResponseTimeout(Timeout.ofSeconds(30))  // Response timeout
+                .setConnectionRequestTimeout(Timeout.ofSeconds(30))  // Request timeout
+                .build();
+
+        // Step 6: Build the HTTP client with proxy and credentials
+        return HttpClients.custom()
+                .setConnectionManager(new PoolingHttpClientConnectionManager())  // Connection manager
+                .setSSLContext(sslContext)  // SSL context for handling HTTPS requests
+                .setRoutePlanner(routePlanner)  // Proxy route planner
+                .setDefaultCredentialsProvider(credsProvider)  // Proxy authentication using credentials
+                .setDefaultRequestConfig(requestConfig)  // Timeout configurations
+                .build();
+    }
+
+
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
