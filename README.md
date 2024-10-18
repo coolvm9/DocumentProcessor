@@ -18,3 +18,50 @@ public void extractTables(PDDocument document) {
             }
         }
     }
+
+
+
+
+public static CloseableHttpClient createHttpClientWithProxy(String proxyUrl) throws Exception {
+
+        // Step 1: Parse the proxy URL to extract credentials and proxy host/port
+        URI proxyUri = new URI(proxyUrl);
+        String[] userInfo = proxyUri.getUserInfo().split(":");
+        String username = userInfo[0];
+        String password = userInfo[1];
+
+        // Step 2: Set up credentials for the proxy (username and password)
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(new URIAuthority(proxyUri), new UsernamePasswordCredentials(username, password.toCharArray()));
+
+        // Step 3: Create an SSL context (trust all certificates for simplicity here, but adjust in production)
+        SSLContextBuilder sslContextBuilder = SSLContexts.custom().loadTrustMaterial((chain, authType) -> true);
+        
+        // Step 4: Configure the proxy host and port
+        HttpHost proxyHost = new HttpHost(proxyUri.getHost(), proxyUri.getPort());
+        DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxyHost);
+
+        // Step 5: Build the HTTP client with proxy and credentials
+        return HttpClients.custom()
+                .setConnectionManager(new PoolingHttpClientConnectionManager())
+                .setSSLContext(sslContextBuilder.build())  // SSL context to trust certificates
+                .setRoutePlanner(routePlanner)  // Set the proxy route planner
+                .setDefaultCredentialsProvider(credsProvider)  // Set credentials for proxy authentication
+                .build();
+    }
+
+    public static void main(String[] args) {
+        try {
+            // Proxy URL with username and password
+            String proxyUrl = "http://myenterpriseId:password@proxy.company.com:8080";
+
+            // Create HTTP client with proxy settings
+            CloseableHttpClient httpClient = createHttpClientWithProxy(proxyUrl);
+
+            // Now you can use httpClient to make requests through the proxy
+            // Example: Make a request to an external URL via the proxy
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
